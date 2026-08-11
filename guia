@@ -1,0 +1,47 @@
+1. INSTALAR PYTHON
+
+instalar python desde su web oficial: https://www.python.org/downloads/
+ejecutar el instalador .exe
+volver a ejecutar el instalador y darle a modificar
+darle a next y seleccionar la casilla de añadir python a variables de entorno
+
+2. INSTALAR PAQUETES DE PYTHON
+
+en el CMD o powershell ejecutar los siguientes comandos:
+pip install flask
+pip install flask-cors
+pip install yt-dlp
+
+3. INSTALAR FFMPEG
+
+en el CMD o powershell ejecutar winget install ffmpeg
+
+4. EJECUTAR EL PYTHON
+
+copia la ruta de el archivo .py 
+en el CMD o powershell ejecutar: py "ruta_del_archivo"
+ejemplo: py C:\Users\unai\Desktop\apps\downloader\app.py
+
+5. PROBAR QUE FUNCIONA
+
+si ha funcionado bien deberias ver algo como: 
+
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.143:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 105-176-411
+
+6. ACCEDE DESDE EL TELEFONO
+
+en el cmd o powershell ejecuta: ipconfig
+te saldra en clgun lugar algo como 192.168.1.143
+ahora en tu telefono busca en el navegador 192.168.1.143:5000
+
+7. DESCARGA VIDEOS Y AUDIOS
+
+ya puedes introducir el link de cualquier video de instagram y de youtube y descargar 
+el audio o el video. tardara unos segundos asi que simplemente espera un poco 
