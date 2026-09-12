@@ -5,54 +5,229 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media Downloader</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
             padding: 20px;
-            background: #f5f5f5;
+            background: radial-gradient(ellipse at top, #1a1a1a 0%, #0a0a0a 70%, #050505 100%);
+            color: #e5e5e5;
         }
+
         .box {
             width: 100%;
-            max-width: 400px;
+            max-width: 440px;
+            background: linear-gradient(180deg, #141414 0%, #0e0e0e 100%);
+            border-radius: 20px;
+            padding: 40px 32px;
+            border: 1px solid #00ff88;
+            box-shadow:
+                0 0 40px rgba(0, 255, 136, 0.15),
+                0 20px 60px rgba(0, 0, 0, 0.6);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
+
+        .box::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #00ff88, transparent 40%, transparent 60%, #00ff88);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 0 30px rgba(0, 255, 136, 0.5),
+                0 8px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .icon svg {
+            width: 32px;
+            height: 32px;
+            fill: #0a0a0a;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 6px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #888888;
+            margin-bottom: 28px;
+        }
+
         input {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            font-size: 16px;
-            box-sizing: border-box;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            font-size: 15px;
+            border: 2px solid #2a2a2a;
+            border-radius: 12px;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            transition: all 0.2s ease;
+            outline: none;
         }
+
+        input:focus {
+            border-color: #00ff88;
+            background: #050505;
+            box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.15);
+        }
+
+        input::placeholder {
+            color: #555555;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
         button {
-            width: 48%;
-            padding: 12px;
-            font-size: 16px;
-            margin: 4px 1%;
+            flex: 1;
+            padding: 14px 16px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #0a0a0a;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            box-shadow:
+                0 0 20px rgba(0, 255, 136, 0.3),
+                0 4px 12px rgba(0, 0, 0, 0.4);
         }
+
+        button svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow:
+                0 0 30px rgba(0, 255, 136, 0.5),
+                0 6px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         #status {
             margin-top: 16px;
+            min-height: 22px;
             font-size: 14px;
-            color: #555;
+            font-weight: 500;
+            color: #666666;
+            transition: color 0.2s ease;
+        }
+
+        #status.success {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+        }
+
+        #status.error {
+            color: #ff4444;
+        }
+
+        #status.loading {
+            color: #00ff88;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-top-color: #00ff88;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #1f1f1f;
+            font-size: 12px;
+            color: #555555;
         }
     </style>
 </head>
 <body>
     <div class="box">
-        <h2>Media Downloader</h2>
-        
-        <input type="url" id="url" placeholder="Pega el link aquí...">
-        
-        <div style="display: flex; justify-content: space-between;">
-            <button onclick="download('audio')">Audio</button> 
-            <button onclick="download('video')">Video</button>
+        <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
         </div>
-        
+        <h2>Media Downloader</h2>
+        <p class="subtitle">Descarga audio y video de tus enlaces favoritos</p>
+
+        <input type="url" id="url" placeholder="Pega el enlace aquí...">
+
+        <div class="buttons">
+            <button onclick="download('audio')">
+                <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                Audio
+            </button>
+            <button onclick="download('video')">
+                <svg viewBox="0 0 24 24"><path d="M4 6.47L5.76 10H20v8H4V6.47M22 4h-4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V4z"/></svg>
+                Video
+            </button>
+        </div>
+
         <div id="status"></div>
+
+        <div class="footer">Pega un enlace válido y elige el formato</div>
     </div>
 
     <script>
@@ -63,10 +238,12 @@
 
             if (!url) {
                 status.textContent = 'Ingresa una URL';
+                status.className = 'error';
                 return;
             }
 
-            status.textContent = 'Descargando...';
+            status.innerHTML = '<span class="spinner"></span>Descargando...';
+            status.className = 'loading';
             buttons.forEach(b => b.disabled = true);
 
             try {
@@ -93,9 +270,11 @@
                 a.remove();
                 window.URL.revokeObjectURL(downloadUrl);
 
-                status.textContent = '¡Listo!';
+                status.textContent = '¡Descarga completada!';
+                status.className = 'success';
             } catch (err) {
                 status.textContent = err.message;
+                status.className = 'error';
             } finally {
                 buttons.forEach(b => b.disabled = false);
             }
